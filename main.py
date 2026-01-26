@@ -3,13 +3,10 @@ from utils import *
 
 def trade(db_name:str, cur_date:str=None):
     """
-    获取新闻，写入数据库，做出决策
+    获取新闻，检索数据库，打分，写入数据库，做出决策
     :param db_name: "real":实盘数据库
                     "test":测试数据库
     :param cur_date: 日期，不填则获取24h内新闻
-    :param strategy: "title-only":只用 title 打分
-                     "title+content":用 title+content 打分
-    :return:
     """
 
     if db_name not in ["real", "test"]:
@@ -56,7 +53,6 @@ def trade(db_name:str, cur_date:str=None):
 
     # 如果数据库中未找到，则 openai 处理新闻
     for news in news_list:
-        # print(news["title"])
         # 1. title-only
         if "sentiment_score" not in news or news["sentiment_score"] is None:
             # print("    title-only:不在数据库或无分数，openai打分...")
@@ -115,21 +111,23 @@ def trade(db_name:str, cur_date:str=None):
     print("\ncalculating...\n")
     title_only_score, title_content_score = calculate_average_sentiment(news_list)
 
-    print("============================================")
+    print("====================== Title-ONLY ======================")
     if title_only_score is not None:
-        print(f"Title-ONLY Average Sentiment Score: {title_only_score:.4f}")
+        print(f"Average Sentiment Score: {title_only_score:.4f}")
         decision = trading_decision(title_only_score)
-        print(f"Title-ONLY Trade Decision: {decision}")
+        print(f"Trade Decision: {decision}")
     else:
         print("No valid Title-ONLY sentiment scores.")
-    print("\n============================================")
+    print("========================================================")
+
+    print("\n=================== Title+Content ======================")
     if title_content_score is not None:
-        print(f"Title+Content Average Sentiment Score: {title_content_score:.4f}")
+        print(f"Average Sentiment Score: {title_content_score:.4f}")
         decision = trading_decision(title_content_score)
-        print(f"Title+Content Trade Decision: {decision}")
+        print(f"Trade Decision: {decision}")
     else:
         print("No valid Title+Content sentiment scores.")
-
+    print("========================================================")
 
 
 if __name__ == "__main__":
