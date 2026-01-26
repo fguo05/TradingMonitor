@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 pd.set_option('display.max_rows', None)
 
 
-def backtest_sentiment_strategy(symbol, asset_type, start_date, end_date):
+def backtest_sentiment_strategy(symbol, asset_type, start_date, end_date, db_name):
     yf_data = get_yfinance_data("Bitcoin", start_date, end_date)
 
     position = 0 # 当前仓位
@@ -28,6 +28,7 @@ def backtest_sentiment_strategy(symbol, asset_type, start_date, end_date):
         else:
             continue
 
+        conn = creat_db_connection(db_name)
         news_from_db = get_news_from_db(conn, symbol, date_str)
 
         # 情感打分
