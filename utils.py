@@ -17,7 +17,7 @@ import pandas as pd
 OPENAI_API_KEY = ""
 
 
-def creat_db_connection(db_name):
+def create_db_connection(db_name):
     if db_name not in ["real", "test"]:
         print("数据库名错误！")
         return None
