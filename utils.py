@@ -20,6 +20,7 @@ OPENAI_API_KEY = ""
 def creat_db_connection(db_name):
     if db_name not in ["real", "test"]:
         print("数据库名错误！")
+        return None
 
     return pymysql.connect(
         host='rm-uf6q5h4a7tkthf82cno.mysql.rds.aliyuncs.com',  # 公网地址
@@ -405,6 +406,7 @@ def calculate_average_sentiment(news_list):
         title_content_score = sum(title_content_scores) / len(title_content_scores)
 
     return title_only_score, title_content_score
+
 
 def trading_decision(score):
     if score > 0.3:
