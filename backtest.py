@@ -28,7 +28,7 @@ def backtest_sentiment_strategy(symbol, asset_type, start_date, end_date, db_nam
         else:
             continue
 
-        conn = creat_db_connection(db_name)
+        conn = create_db_connection(db_name)
         news_from_db = get_news_from_db(conn, symbol, date_str)
 
         # 情感打分
