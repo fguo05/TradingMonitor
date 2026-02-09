@@ -33,12 +33,17 @@ def trade(db_name:str, cur_date:str=None):
         print(f"正在获取 {symbol} 在过去 24 小时内的新闻...")
         news_list = get_stock_news(symbol, topics=all_topics)
 
+    # 打印新闻
+    print(len(news_list))
+    for news in news_list:
+        print(news["title"], news["content"])
+
     if news_list:
         print(f"成功获取 {len(news_list)} 条新闻")
     else:
         return
 
-    conn = creat_db_connection(db_name)
+    conn = create_db_connection(db_name)
 
     # 如果新闻在数据库中存在且打过分则直接用
     for news in news_list:
@@ -96,6 +101,9 @@ def trade(db_name:str, cur_date:str=None):
 
             news['sentiment_title_content'] = explanation
             news['sentiment_score_title_content'] = score
+
+        # openai分数
+        print(news["sentiment_score"], news["sentiment_score_title_content"])
 
     # 新闻写入数据库
     print("正在将新闻写入数据库...")
